@@ -1,0 +1,45 @@
+/* styles.css */
+.dashboard {
+  display: flex;
+  /* background-color: #f4f4f4; */
+}
+
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white; /* Set font color to white */
+}
+
+.sidebar:hover {
+  box-shadow: 0 0 20px yellow;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  color: white; /* Ensure links are also white */
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+.main-display {
+  flex-grow: 1;
+  padding: 20px;
+}

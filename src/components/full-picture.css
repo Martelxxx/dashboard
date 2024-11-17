@@ -1,0 +1,21 @@
+.dashboard {
+    display: flex;
+    background-color: rgb(8,7,23);
+    padding: 20px;
+    gap: 20px;
+    color: white;
+  }
+
+  .tile {
+    width: 200px;
+    height: 100px;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    color: rgb(8,7,23);
+    padding: 20px;
+    border-radius: 5%;
+  }
+
+    .tile:hover {
+        box-shadow: 0 0 20px yellow;
+    }
