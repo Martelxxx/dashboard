@@ -1,11 +1,14 @@
 import React from 'react'
 
 import './full-picture.css'
+import bsc from '../assets/bsc.png'
 
 const FullPicture = () => {
   return (
+    <>
+    Full Picture Content XYX234
+    <div className='tileContainer'>
     <div>
-      Full Picture Content XYX
       <div className='dashboard'>
       <div className='tile'>Staff</div>
       <div className='tile'>Clients</div>
@@ -25,6 +28,12 @@ const FullPicture = () => {
       <div className='tile'>Expenses</div>
       </div>
     </div>
+    </div>
+
+    <div className='logo'>
+      <img src={bsc} alt="BSC Logo" />
+    </div>
+    </>
   )
 }
 

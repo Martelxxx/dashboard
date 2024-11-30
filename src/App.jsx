@@ -1,8 +1,8 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Routes, Link, } from 'react-router-dom'
-import FullPicture from './components/full-picture'
-
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import FullPicture from './components/full-picture.jsx';
+import Staff from './components/staff.jsx';
+import './App.css';
 
 const Sidebar = () => (
   <div className="sidebar">
@@ -15,20 +15,20 @@ const Sidebar = () => (
       <li><Link to="/calendar">Calendar</Link></li>
     </ul>
   </div>
-)
+);
 
 const MainDisplay = () => (
   <div className="main-display">
     <Routes>
       <Route path="/full-picture" element={<FullPicture />} />
-      <Route path="/staff" element={<div>Staff Content</div>} />
+      <Route path="/staff" element={<Staff />} />
       <Route path="/clients" element={<div>Clients Content</div>} />
       <Route path="/leads" element={<div>Leads Content</div>} />
       <Route path="/email" element={<div>Email Content</div>} />
       <Route path="/calendar" element={<div>Calendar Content</div>} />
     </Routes>
   </div>
-)
+);
 
 const App = () => {
   return (
@@ -38,7 +38,7 @@ const App = () => {
         <MainDisplay />
       </div>
     </Router>
-  )
-}
+  );
+};
 
-export default App
+export default App;

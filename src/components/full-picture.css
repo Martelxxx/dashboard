@@ -6,6 +6,14 @@
     color: white;
   }
 
+  .tileContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+  }
+
   .tile {
     width: 200px;
     height: 100px;
@@ -14,6 +22,7 @@
     color: rgb(8,7,23);
     padding: 20px;
     border-radius: 5%;
+    z-index: 1;
   }
 
     .tile:hover {

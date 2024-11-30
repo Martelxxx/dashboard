@@ -1,7 +1,16 @@
-/* styles.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+font-family: "Martel Sans", sans-serif;
+font-weight: 300;
+
+}
+
 .dashboard {
   display: flex;
-  /* background-color: #f4f4f4; */
+  background-color: #f4f4f4;
+  position: relative;
 }
 
 .sidebar {
@@ -10,20 +19,26 @@
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   padding: 20px;
-  transition: box-shadow 0.3s ease;
+  transition: transform 0.75s ease, box-shadow 0.1s ease; /* Increase transform duration */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: white; /* Set font color to white */
+  position: relative;
+  left: -180px; /* Move sidebar off-screen */
+  top: -20px;
 }
 
 .sidebar:hover {
+  transform: translateX(180px);
   box-shadow: 0 0 20px yellow;
 }
 
 .sidebar ul {
   list-style-type: none;
   padding: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar ul li {
@@ -37,6 +52,15 @@
 
 .sidebar ul li a:hover {
   text-decoration: underline;
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  /* opacity: 0.1; Adjust opacity as needed */
 }
 
 .main-display {
