@@ -164,14 +164,15 @@ const Staff = () => {
   const microInternshipCount = staffList.filter((staff) => staff.duty === 'Micro Internship').length;
   const prospectingCount = staffList.filter((staff) => staff.duty === 'Prospecting').length;
   const noneCount = staffList.filter((staff) => staff.duty === 'None').length;
+  const AWOLCount = staffList.filter((staff) => staff.duty === 'AWOL').length;
 
   const chartData = {
-    labels: ['Micro Internship', 'Prospecting', 'None'],
+    labels: ['Micro Internship', 'Prospecting', 'None', 'AWOL'],
     datasets: [
       {
-        data: [microInternshipCount, prospectingCount, noneCount],
-        backgroundColor: ['#36A2EB', '#FF6384', '#FFCD56'],
-        hoverBackgroundColor: ['#36A2EBAA', '#FF6384AA', '#FFCD56AA'],
+        data: [microInternshipCount, prospectingCount, noneCount, AWOLCount],
+        backgroundColor: ['#36A2EB', '#FF6384', '#FFCD56', 'red'],
+        hoverBackgroundColor: ['#36A2EBAA', '#FF6384AA', '#FFCD56AA', 'red'],
       },
     ],
   };
@@ -328,7 +329,9 @@ const Staff = () => {
                       {staff.firstName}
                     </td>
                     <td>{staff.lastName}</td>
-                    <td>{staff.email}</td>
+                    <td>
+                      <a href={`mailto:${staff.email}`}>{staff.email}</a> {/* Email link */}
+                    </td>
                     <td>
                       <input
                         type="checkbox"
@@ -358,6 +361,7 @@ const Staff = () => {
                         <option value="None">None</option>
                         <option value="Micro Internship">Micro Internship</option>
                         <option value="Prospecting">Prospecting</option>
+                        <option value="AWOL">AWOL</option>
                       </select>
                     </td>
                     <td>{getStatus(staff)}</td>
