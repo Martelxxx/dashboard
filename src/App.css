@@ -14,19 +14,20 @@ font-weight: 300;
 }
 
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: -180px;
   width: 200px;
   height: 100vh;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   padding: 20px;
-  transition: transform 0.75s ease, box-shadow 0.1s ease; /* Increase transform duration */
+  transition: transform 0.5s ease, box-shadow 0.1s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white; /* Set font color to white */
-  position: relative;
-  left: -180px; /* Move sidebar off-screen */
-  top: -20px;
+  color: white;
+  z-index: 1000;
 }
 
 .sidebar:hover {

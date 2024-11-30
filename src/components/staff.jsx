@@ -97,6 +97,45 @@ const Staff = () => {
     }
   };
 
+  // Update a staff member
+  const updateStaff = async (id, updatedFields) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/staff/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedFields),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update staff');
+      }
+
+      const updatedStaff = await response.json();
+      setStaffList((prevStaffList) =>
+        prevStaffList.map((staff) => (staff._id === id ? updatedStaff : staff))
+      );
+    } catch (error) {
+      console.error('Error updating staff:', error);
+      alert('There was an error updating the staff. Please try again.');
+    }
+  };
+
+  // Handle checkbox changes
+  const handleCheckboxChange = (index, field) => {
+    const updatedStaffList = staffList.map((staff, i) => {
+      if (i === index) {
+        const updatedStaff = { ...staff, [field]: !staff[field] };
+        updateStaff(staff._id, { [field]: updatedStaff[field] });
+        return updatedStaff;
+      }
+      return staff;
+    });
+    setStaffList(updatedStaffList);
+  };
+
+  // Delete a staff member
   const deleteStaff = async (id) => {
     const password = prompt('Enter password to delete:');
     if (password !== 'Delete') {
@@ -105,22 +144,18 @@ const Staff = () => {
     }
 
     try {
-      console.log(`Sending DELETE request for staff ID: ${id}`);
       const response = await fetch(`http://localhost:3000/api/staff/${id}`, {
         method: 'DELETE',
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`${response.status} ${response.statusText}: ${errorData.message}`);
+        throw new Error('Failed to delete staff');
       }
 
-      console.log(`Staff with ID ${id} deleted successfully.`);
       setStaffList((prevStaffList) => prevStaffList.filter((staff) => staff._id !== id));
-      alert('Staff member deleted successfully.');
     } catch (error) {
       console.error('Error deleting staff:', error);
-      alert(`Failed to delete staff: ${error.message}`);
+      alert('There was an error deleting the staff. Please try again.');
     }
   };
 
@@ -129,15 +164,14 @@ const Staff = () => {
   const microInternshipCount = staffList.filter((staff) => staff.duty === 'Micro Internship').length;
   const prospectingCount = staffList.filter((staff) => staff.duty === 'Prospecting').length;
   const noneCount = staffList.filter((staff) => staff.duty === 'None').length;
-  const AWOLCount = staffList.filter((staff) => staff.duty === 'AWOL').length;
 
   const chartData = {
-    labels: ['Micro Internship', 'Prospecting', 'None', 'AWOL'],
+    labels: ['Micro Internship', 'Prospecting', 'None'],
     datasets: [
       {
-        data: [microInternshipCount, prospectingCount, noneCount, AWOLCount],
-        backgroundColor: ['#36A2EB', '#FF6384', '#FFCD56', 'red'],
-        hoverBackgroundColor: ['#36A2EBAA', '#FF6384AA', '#FFCD56AA', 'red'],
+        data: [microInternshipCount, prospectingCount, noneCount],
+        backgroundColor: ['#36A2EB', '#FF6384', '#FFCD56'],
+        hoverBackgroundColor: ['#36A2EBAA', '#FF6384AA', '#FFCD56AA'],
       },
     ],
   };
@@ -165,7 +199,9 @@ const Staff = () => {
   const toggleCheckbox = (index, field) => {
     const updatedStaffList = staffList.map((staff, i) => {
       if (i === index) {
-        return { ...staff, [field]: !staff[field] };
+        const updatedStaff = { ...staff, [field]: !staff[field] };
+        updateStaff(staff._id, { [field]: updatedStaff[field] });
+        return updatedStaff;
       }
       return staff;
     });
@@ -175,7 +211,9 @@ const Staff = () => {
   const handleDutyChange = (index, newDuty) => {
     const updatedStaffList = staffList.map((staff, i) => {
       if (i === index) {
-        return { ...staff, duty: newDuty };
+        const updatedStaff = { ...staff, duty: newDuty };
+        updateStaff(staff._id, { duty: newDuty });
+        return updatedStaff;
       }
       return staff;
     });
@@ -185,7 +223,9 @@ const Staff = () => {
   const handleNotesChange = (index, notes) => {
     const updatedStaffList = staffList.map((staff, i) => {
       if (i === index) {
-        return { ...staff, notes };
+        const updatedStaff = { ...staff, notes };
+        updateStaff(staff._id, { notes });
+        return updatedStaff;
       }
       return staff;
     });
@@ -318,7 +358,6 @@ const Staff = () => {
                         <option value="None">None</option>
                         <option value="Micro Internship">Micro Internship</option>
                         <option value="Prospecting">Prospecting</option>
-                        <option value="AWOL">AWOL</option>
                       </select>
                     </td>
                     <td>{getStatus(staff)}</td>
