@@ -1,15 +1,18 @@
 import mongoose from 'mongoose';
 
 const staffSchema = new mongoose.Schema({
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    college: { type: String, required: true },
-    major: { type: String, required: true },
-    postion: { type: String, required: true }
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: { type: String },
+  collegeCampus: { type: String },
+  major: { type: String },
+  role: { type: String },
+  employeeAgreement: { type: Boolean, default: false },
+  weeklyOrientation: { type: Boolean, default: false },
+  onboardingDocs: { type: Boolean, default: false },
+  duty: { type: String, default: 'None' },
+  notes: { type: String },
 });
 
-const Staff = mongoose.model('Staff', staffSchema);
-
-export default Staff;
+export default mongoose.model('Staff', staffSchema);

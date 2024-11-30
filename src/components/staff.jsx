@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -28,6 +28,24 @@ const Staff = () => {
   });
   const [expandedStaffIndex, setExpandedStaffIndex] = useState(null);
 
+  // Fetch existing staff from the backend
+  const fetchStaff = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/staff');
+      if (!response.ok) {
+        throw new Error('Failed to fetch staff');
+      }
+      const data = await response.json();
+      setStaffList(data);
+    } catch (error) {
+      console.error('Error fetching staff:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStaff();
+  }, []);
+
   // Handle changes to staff input fields
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -38,65 +56,110 @@ const Staff = () => {
   };
 
   // Add a new staff member
-  const addStaff = () => {
+  const addStaff = async () => {
     if (!newStaff.firstName || !newStaff.lastName || !newStaff.email) {
       alert('Please fill out all required fields (First Name, Last Name, Email).');
       return;
     }
 
-    setStaffList([...staffList, newStaff]);
-    setNewStaff({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      collegeCampus: '',
-      major: '',
-      role: '',
-      employeeAgreement: false,
-      weeklyOrientation: false,
-      onboardingDocs: false,
-      duty: 'None',
-      notes: '',
-    });
+    try {
+      const response = await fetch('http://localhost:3000/api/staff', { // Ensure the URL matches your backend route
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newStaff),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add staff');
+      }
+
+      const savedStaff = await response.json();
+      setStaffList((prevStaffList) => [...prevStaffList, savedStaff]); // Add new staff to the list
+      setNewStaff({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        collegeCampus: '',
+        major: '',
+        role: '',
+        employeeAgreement: false,
+        weeklyOrientation: false,
+        onboardingDocs: false,
+        duty: 'None',
+        notes: '',
+      });
+    } catch (error) {
+      console.error('Error adding staff:', error);
+      alert('There was an error adding the staff. Please try again.');
+    }
+  };
+
+  const deleteStaff = async (id) => {
+    const password = prompt('Enter password to delete:');
+    if (password !== 'Delete') {
+      alert('Incorrect password. Deletion cancelled.');
+      return;
+    }
+
+    try {
+      console.log(`Sending DELETE request for staff ID: ${id}`);
+      const response = await fetch(`http://localhost:3000/api/staff/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`${response.status} ${response.statusText}: ${errorData.message}`);
+      }
+
+      console.log(`Staff with ID ${id} deleted successfully.`);
+      setStaffList((prevStaffList) => prevStaffList.filter((staff) => staff._id !== id));
+      alert('Staff member deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting staff:', error);
+      alert(`Failed to delete staff: ${error.message}`);
+    }
   };
 
   // Calculate duty distribution
   const totalStaff = staffList.length;
   const microInternshipCount = staffList.filter((staff) => staff.duty === 'Micro Internship').length;
   const prospectingCount = staffList.filter((staff) => staff.duty === 'Prospecting').length;
-  const noneCount = staffList.filter((staff) => staff.duty === 'None').length;  // Count for "None" duty
+  const noneCount = staffList.filter((staff) => staff.duty === 'None').length;
+  const AWOLCount = staffList.filter((staff) => staff.duty === 'AWOL').length;
 
   const chartData = {
-    labels: ['Micro Internship', 'Prospecting', 'None'],  // Include 'None' as a label
+    labels: ['Micro Internship', 'Prospecting', 'None', 'AWOL'],
     datasets: [
       {
-        data: [microInternshipCount, prospectingCount, noneCount],  // Add the "None" count here
-        backgroundColor: ['#36A2EB', '#FF6384', '#FFCD56'],  // Color for the "None" section
-        hoverBackgroundColor: ['#36A2EBAA', '#FF6384AA', '#FFCD56AA'],  // Hover color for the "None" section
+        data: [microInternshipCount, prospectingCount, noneCount, AWOLCount],
+        backgroundColor: ['#36A2EB', '#FF6384', '#FFCD56', 'red'],
+        hoverBackgroundColor: ['#36A2EBAA', '#FF6384AA', '#FFCD56AA', 'red'],
       },
     ],
   };
 
-  // Function to determine the status emoji
   const getStatus = (staff) => {
     const { employeeAgreement, weeklyOrientation, onboardingDocs, duty } = staff;
 
     if (employeeAgreement && weeklyOrientation && onboardingDocs) {
       if (duty === 'None') {
-        return '⭐'; // Star emoji for all boxes checked and duty is 'None'
+        return '⭐';
       } else if (duty === 'Prospecting') {
-        return '⏳'; // Loading emoji for Prospecting duty
+        return '⏳';
       } else if (duty === 'Micro Internship') {
-        return '💰💰'; // Micro Internship emoji
+        return '💰💰';
       }
     }
 
     if (!employeeAgreement && !weeklyOrientation && !onboardingDocs) {
-      return '⚠️'; // Warning emoji if none of the boxes are checked
+      return '⚠️';
     }
 
-    return '⚠️'; // Default warning if conditions aren't met
+    return '⚠️';
   };
 
   const toggleCheckbox = (index, field) => {
@@ -184,49 +247,7 @@ const Staff = () => {
             value={newStaff.role}
             onChange={handleInputChange}
           />
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="employeeAgreement"
-                checked={newStaff.employeeAgreement}
-                onChange={handleInputChange}
-              />
-              Received and Signed Employee Agreement
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="weeklyOrientation"
-                checked={newStaff.weeklyOrientation}
-                onChange={handleInputChange}
-              />
-              Scheduled for Weekly Orientation
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                name="onboardingDocs"
-                checked={newStaff.onboardingDocs}
-                onChange={handleInputChange}
-              />
-              Sent Onboarding and Welcome Docs
-            </label>
-          </div>
-          <div>
-            <label>
-              Duty:
-              <select name="duty" value={newStaff.duty} onChange={handleInputChange}>
-                <option value="None">None</option>
-                <option value="Micro Internship">Micro Internship</option>
-                <option value="Prospecting">Prospecting</option>
-              </select>
-            </label>
-          </div>
+          
           <button onClick={addStaff}>Add Staff</button>
         </div>
 
@@ -255,7 +276,8 @@ const Staff = () => {
                 <th>Weekly Orientation</th>
                 <th>Onboarding Docs</th>
                 <th>Duty</th>
-                <th>Status</th> {/* Added Status Column */}
+                <th>Status</th>
+                <th>Actions</th> {/* Added Actions Column */}
               </tr>
             </thead>
             <tbody>
@@ -296,13 +318,17 @@ const Staff = () => {
                         <option value="None">None</option>
                         <option value="Micro Internship">Micro Internship</option>
                         <option value="Prospecting">Prospecting</option>
+                        <option value="AWOL">AWOL</option>
                       </select>
                     </td>
-                    <td>{getStatus(staff)}</td> {/* Display status emoji */}
+                    <td>{getStatus(staff)}</td>
+                    <td>
+                      <button onClick={() => deleteStaff(staff._id)}>Delete</button>
+                    </td>
                   </tr>
                   {expandedStaffIndex === index && (
                     <tr>
-                      <td colSpan="8">
+                      <td colSpan="9">
                         <div className="expanded-details">
                           <p><strong>Phone:</strong> {staff.phone}</p>
                           <p><strong>College Campus:</strong> {staff.collegeCampus}</p>
