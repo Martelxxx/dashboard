@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import session from 'express-session';
 import staffRouter from './src/controllers/staff.js'; // Ensure the path to staff router is correct
+import taskRouter from './src/controllers/tasks.js'; // Ensure the path to task router is correct
 
 const app = express();
 
@@ -35,6 +36,7 @@ mongoose.connection.on("error", (err) => {
 
 // CRUD Routes
 app.use('/api/staff', staffRouter);
+app.use('/api/tasks', taskRouter);
 
 // Server Listener
 app.listen(3000, () => {

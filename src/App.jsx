@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import FullPicture from './components/full-picture.jsx';
 import Staff from './components/staff.jsx';
+import Tasks from './components/tasks.jsx';
 import './App.css';
 
 const Sidebar = () => (
@@ -11,6 +12,7 @@ const Sidebar = () => (
       <li><Link to="/staff">Staff</Link></li>
       <li><Link to="/clients">Clients</Link></li>
       <li><Link to="/leads">Leads</Link></li>
+      <li><Link to="/tasks">Tasks</Link></li>
       <li><Link to="/email">Email</Link></li>
       <li><Link to="/calendar">Calendar</Link></li>
     </ul>
@@ -26,6 +28,7 @@ const MainDisplay = () => (
       <Route path="/leads" element={<div>Leads Content</div>} />
       <Route path="/email" element={<div>Email Content</div>} />
       <Route path="/calendar" element={<div>Calendar Content</div>} />
+      <Route path="/tasks" element={<Tasks />} />
     </Routes>
   </div>
 );
