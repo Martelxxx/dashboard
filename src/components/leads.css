@@ -1,63 +1,59 @@
 body {
     font-family: "Martel Sans", sans-serif;
-    background-color: #f9f9f9;
+    background-color: red;
     margin: 0;
     padding: 0;
   }
   
-  .tasks-container {
+  .leads-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
   }
   
-  .main-content {
+  .main-content1 {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
     width: calc(100% - 200px); /* Adjust width to account for sidebar */
     margin-left: 200px; /* Ensure main content is not hidden by sidebar */
     max-width: 1200px;
   }
   
-  .add-task-form {
-    width: 45%;
+  .add-lead-form {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
   }
   
-  .add-task-form input,
-  .add-task-form select,
-  .add-task-form textarea {
+  .add-lead-form input,
+  .add-lead-form select,
+  .add-lead-form textarea {
     display: block;
     margin: 10px 0;
     padding: 8px;
     width: 100%;
   }
   
-  .average-completion-time {
-    width: 45%;
-    text-align: center;
+  .leads-list {
+    width: 100%;
   }
   
-  .tasks-list {
-    width: 80%;
-    margin-top: 20px;
-  }
-  
-  .tasks-list table {
-    width: calc(100% - 200px)
+  .leads-list table {
+    width: 100%;
     border-collapse: collapse;
     border-radius: 10px; /* Add border-radius to the table */
     overflow: hidden; /* Ensure the border-radius is applied correctly */
   }
   
-  .tasks-list th,
-  .tasks-list td {
+  .leads-list th,
+  .leads-list td {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: left;
   }
   
-  .tasks-list th {
+  .leads-list th {
     background-color: #f4f4f4;
   }
   
@@ -66,14 +62,4 @@ body {
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     margin-top: 10px;
-  }
-  
-  .expanded-details textarea {
-    width: 100%;
-    height: 150px; /* Adjust the height as needed */
-    padding: 8px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: vertical; /* Allow vertical resizing */
   }

@@ -17,6 +17,7 @@ const FullPicture = () => {
     dueSoon: 0,
     highPriority: 0,
   });
+  const [dueSoon, setDueSoon] = useState(false);
 
   // Fetch existing staff from the backend
   const fetchStaff = async () => {
@@ -27,15 +28,11 @@ const FullPicture = () => {
       }
       const data = await response.json();
       setStaffList(data);
-      calculateBreakdown(data);
+      calculateStaffBreakdown(data);
     } catch (error) {
       console.error('Error fetching staff:', error);
     }
   };
-
-  useEffect(() => {
-    fetchStaff();
-  }, []);
 
   // Fetch existing tasks from the backend
   const fetchTasks = async () => {
@@ -47,6 +44,7 @@ const FullPicture = () => {
       const data = await response.json();
       setTaskList(data);
       calculateTaskBreakdown(data);
+      checkDueSoonTasks(data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -58,7 +56,7 @@ const FullPicture = () => {
   }, []);
 
   // Calculate the percentage breakdown of staff duty
-  const calculateBreakdown = (staffList) => {
+  const calculateStaffBreakdown = (staffList) => {
     const total = staffList.length;
     const microInternshipCount = staffList.filter((staff) => staff.duty === 'Micro Internship').length;
     const prospectingCount = staffList.filter((staff) => staff.duty === 'Prospecting').length;
@@ -74,14 +72,13 @@ const FullPicture = () => {
     });
   };
 
-
   // Calculate the breakdown of tasks
   const calculateTaskBreakdown = (taskList) => {
     const now = new Date();
     const twoDaysFromNow = new Date(now);
     twoDaysFromNow.setDate(now.getDate() + 2);
 
-    const dueSoonCount = taskList.filter((task) => new Date(task.dueDate) <= twoDaysFromNow).length;
+    const dueSoonCount = taskList.filter((task) => new Date(task.dueDate) <= twoDaysFromNow && !task.completed).length;
     const highPriorityCount = taskList.filter((task) => task.priority === 'High').length;
 
     setTaskBreakdown({
@@ -90,10 +87,20 @@ const FullPicture = () => {
     });
   };
 
+  // Check for tasks due soon
+  const checkDueSoonTasks = (tasks) => {
+    const now = new Date();
+    const twoDaysFromNow = new Date(now);
+    twoDaysFromNow.setDate(now.getDate() + 2);
+
+    const dueSoonTasks = tasks.some((task) => new Date(task.dueDate) <= twoDaysFromNow && !task.completed);
+    setDueSoon(dueSoonTasks);
+  };
+
   return (
     <>
-      <h1>At A Glance</h1>
       <div className='tileContainer'>
+      <h1>At a Glance</h1>
         <div>
           <div className='dashboard'>
             <div className='tile'>
@@ -104,7 +111,6 @@ const FullPicture = () => {
               <p>None: {staffBreakdown.none}%</p>
               <p>AWOL: {staffBreakdown.awol}%</p>
             </div>
-           
             <div className='tile'>Clients</div>
             <div className='tile'>Leads</div>
           </div>
@@ -112,10 +118,12 @@ const FullPicture = () => {
           <div className='dashboard'>
             <div className='tile'>Email</div>
             <div className='tile'>Calendar</div>
-            <div className='tile'>
-            <h3>Tasks</h3>
+            <div className={`tile ${dueSoon ? 'pulsate' : ''}`}>
+              <h3>Tasks</h3>
               <p>Due Soon: {taskBreakdown.dueSoon}</p>
-              <p>High Priority: {taskBreakdown.highPriority}</p>
+              <p className={taskBreakdown.highPriority > 0 ? 'high-priority' : ''}>
+                High Priority: {taskBreakdown.highPriority}
+              </p>
             </div>
           </div>
 

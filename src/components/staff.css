@@ -1,8 +1,9 @@
 body {
     font-family: "Martel Sans", sans-serif;
-    background-color: #f9f9f9;
+    background-color: rgb(8, 7, 23);
     margin: 0;
     padding: 0;
+    color: white; /* Ensure text is visible on the dark background */
   }
   
   .staff-container {
@@ -13,22 +14,26 @@ body {
   
   .main-content {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     width: calc(100% - 200px); /* Adjust width to account for sidebar */
-    margin-left: 200px; /* Ensure main content is not hidden by sidebar */
     max-width: 1200px;
-  }
-
-  .staff-list {
-    width: calc(100% - 200px);
+    margin: 0 auto; /* Center the main content */
+    gap: 20px; /* Add space between the form and chart */
   }
   
   .add-staff-form {
-    width: 45%;
+    flex: 1;
+    max-width: 600px; /* Prevent the form from stretching too wide */
   }
   
   .chart-container {
-    width: 35%;
+    flex: 1;
+    max-width: 400px; /* Ensure the chart doesn't dominate the layout */
+    background-color: rgb(20, 20, 40); /* Slightly darker background for contrast */
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
   }
   
@@ -39,14 +44,19 @@ body {
     padding: 8px;
     width: 100%;
     max-width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: rgb(255, 255, 255); /* Ensure inputs stand out on dark background */
+    color: black;
   }
   
   button {
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: red;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
   }
   
   button:hover {
@@ -59,29 +69,62 @@ body {
     margin-top: 20px;
   }
   
-  th, td {
+  th,
+  td {
     border: 1px solid #ddd;
     padding: 8px;
   }
   
   th {
-    background-color: rgb(8,7,23);
+    background-color: rgb(8, 7, 23);
     text-align: left;
+    color: white;
   }
-
+  
   .expanded-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     padding: 10px;
-    /* background-color: #f9f9f9; */
-    border: 1px solid #ccc;
+    background-color: rgb(8, 7, 23);
+    border: 1px solid red;
     margin-top: 10px;
+    border-radius: 5px;
   }
   
   .expanded-details textarea {
-    width: 98%;
-    height: 150px; /* Adjust the height as needed */
+    width: 95%;
+    height: 150px;
     padding: 8px;
     margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: vertical; /* Allow vertical resizing */
+    resize: vertical;
+    background-color: white; /* Ensure contrast for textarea */
+    color: black;
+  }
+  
+  p {
+    color: white;
+  }
+  
+  .chart-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: white;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .main-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .add-staff-form,
+    .chart-container {
+      max-width: 100%;
+      flex: none;
+    }
   }

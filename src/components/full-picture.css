@@ -25,7 +25,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   width: 300px;
   height: 200px;
   border: 1px solid #ccc;
@@ -35,7 +35,7 @@ body {
   border-radius: 5%;
   z-index: 1;
   margin: auto;
-  /* text-align: center; Center text horizontally */
+  text-align: center; /* Center text horizontally */
   line-height: 1.2; /* Adjust line height to decrease space between lines */
 }
 
@@ -51,6 +51,7 @@ body {
 .tile p {
   margin: 5px 0;
   font-size: 0.9em;
+  color: black;
 }
 
 .logo {
@@ -62,8 +63,40 @@ body {
   height: auto;
 }
 
-h1 {
-  text-align: center;
-  width: 100%;
-  margin: 20px 0;
+/* Pulsating animation for due soon tasks */
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  }
+}
+
+.pulsate {
+  animation: pulsate 1s infinite;
+}
+
+/* Pulsating red animation for high priority tasks */
+@keyframes pulsate-red {
+  0% {
+    color: black;
+  }
+  50% {
+    color: red;
+  }
+  100% {
+    color: black;
+  }
+}
+
+.high-priority {
+  font-weight: bold;
+  animation: pulsate-red 1s infinite;
 }

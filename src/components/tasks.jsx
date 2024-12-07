@@ -9,6 +9,7 @@ const Tasks = () => {
     dueDate: '',
     priority: 'Low',
     completed: false,
+    createdAt: null,
     completionDate: null,
     timeToComplete: null,
   });
@@ -78,6 +79,7 @@ const Tasks = () => {
         dueDate: '',
         priority: 'Low',
         completed: false,
+        createdAt: null,
         completionDate: null,
         timeToComplete: null,
       });
@@ -90,8 +92,6 @@ const Tasks = () => {
   // Update a task
   const updateTask = async (id, updatedFields) => {
     try {
-      console.log('Sending PATCH request for task:', id, updatedFields);
-  
       const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
         method: 'PATCH',
         headers: {
@@ -99,18 +99,18 @@ const Tasks = () => {
         },
         body: JSON.stringify(updatedFields),
       });
-  
+
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(`Failed to update task. Status: ${response.status}, Message: ${errorResponse.message}`);
       }
-  
+
       const updatedTask = await response.json();
-      console.log('Task updated successfully:', updatedTask);
-  
-      setTaskList((prevTaskList) =>
-        prevTaskList.map((task) => (task._id === id ? updatedTask : task))
-      );
+      setTaskList((prevTaskList) => {
+        const updatedTaskList = prevTaskList.map((task) => (task._id === id ? updatedTask : task));
+        calculateAverageCompletionTime(updatedTaskList);
+        return updatedTaskList;
+      });
     } catch (error) {
       console.error('Error updating task:', error);
       alert('There was an error updating the task. Please try again.');
@@ -122,32 +122,22 @@ const Tasks = () => {
     const updatedTaskList = [...taskList];
     const taskToUpdate = updatedTaskList[index];
     taskToUpdate[field] = !taskToUpdate[field];
-  
+
     if (field === 'completed' && taskToUpdate[field]) {
       const completionDate = new Date();
       const timeToComplete = Math.ceil((completionDate - new Date(taskToUpdate.createdAt)) / (1000 * 60 * 60 * 24));
       taskToUpdate.completionDate = completionDate;
       taskToUpdate.timeToComplete = timeToComplete;
-  
-      console.log('Updating task with completion details:', {
-        completed: taskToUpdate.completed,
-        completionDate,
-        timeToComplete,
-      });
-  
+
       await updateTask(taskToUpdate._id, {
         completed: taskToUpdate.completed,
         completionDate,
         timeToComplete,
       });
     } else {
-      console.log('Updating task without completion details:', {
-        completed: taskToUpdate.completed,
-      });
-  
       await updateTask(taskToUpdate._id, { completed: taskToUpdate.completed });
     }
-  
+
     setTaskList(updatedTaskList);
   };
 
@@ -277,7 +267,7 @@ const Tasks = () => {
                     </td>
                     <td>{task.description}</td>
                     <td>{task.dueDate}</td>
-                    <td>{task.priority}</td>
+                    <td className={task.priority === 'High' ? 'high-priority' : ''}>{task.priority}</td>
                     <td>
                       <input
                         type="checkbox"

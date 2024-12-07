@@ -1,0 +1,167 @@
+/* General container styling */
+.calendar-container {
+    font-family: "Martel Sans", sans-serif;
+    background-color: rgb(8, 7, 23); /* Dark theme background */
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+    height: 100vh;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Slightly darker shadow */
+    color: white; /* Default text color for the dark theme */
+  }
+  
+  /* Header */
+  .calendar-container h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: white; /* Light color for better contrast */
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white; /* Label text color */
+  }
+  
+  .form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #555; /* Subtle border for dark theme */
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: rgb(20, 20, 40); /* Dark input background */
+    color: white; /* Input text color */
+  }
+  
+  .form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+  }
+  
+  /* Button styling */
+  button {
+    display: inline-block;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  button:hover:not(:disabled) {
+    background-color: #c40000; /* Brighter red on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+  }
+  
+  button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+  }
+  
+  /* Pulsating effect for button text */
+  button span.pulsating-text {
+    animation: pulse 1.5s infinite;
+    font-weight: bold;
+    color: yellow;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      color: yellow;
+    }
+    50% {
+      color: white;
+    }
+  }
+  
+  /* Error message styling */
+  .error {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  /* Results section */
+  .results {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgb(20, 20, 40); /* Dark theme background */
+    border: 1px solid red; /* Red border for emphasis */
+    border-radius: 5px;
+  }
+  
+  .results h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: red; /* Highlight heading */
+  }
+  
+  .results p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: white;
+  }
+  
+  .results h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #ccc; /* Subtle color for secondary headings */
+  }
+  
+  .results ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .results ul li {
+    margin: 5px 0;
+    font-size: 14px;
+    color: white; /* List items text color */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .calendar-container {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 20px;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  
+    .results p,
+    .results ul li {
+      font-size: 12px;
+    }
+  }
+
+  .small-text {
+    font-size: 1px;
+    color: gray;
+    margin-top: 5px;
+    white-space: pre-wrap; /* Ensures proper line breaks for long text */
+  }
+  
+  .keyword-summary {
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+  }
